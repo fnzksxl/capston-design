@@ -20,3 +20,5 @@ RUN mkdir saved_model
 COPY *.py .
 COPY saved_model /app/saved_model/
 COPY dataset /app/dataset/
+COPY dataset/data.tsv .
+COPY saved_model /app/saved_model/

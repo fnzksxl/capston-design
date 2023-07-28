@@ -9,9 +9,9 @@ model_path='./saved_model'
 model_name = "gogamza/kobart-base-v2"
 
 model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
-if os.path.exists('./saved_model/pytorch_model.bin'):
+if os.path.exists(f'{model_path}/pytorch_model.bin'):
   print("Use Customized Model")
-  model = AutoModelForSeq2SeqLM.from_pretrained('./saved_model')
+  model = AutoModelForSeq2SeqLM.from_pretrained(model_path)
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 # Dataset

@@ -29,6 +29,7 @@ class TextStyleTransferDataset(Dataset):
         del model_inputs['token_type_ids']
 
         return model_inputs
+    
 def make_df(data_root):
     df = pd.read_csv(f'{data_root}/data.tsv',sep='\t')
     idx=int(len(df)*0.1)

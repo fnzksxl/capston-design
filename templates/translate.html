@@ -3,7 +3,17 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Translate Page</title>
+	<link rel="stylesheet" href="static/translate.css">
 </head>
-
-표준어 : {{text_kor}}
-영어 : {{text_eng}}
+<body>
+	<div class="wrapper">
+		<div class="container">
+			<div style="text-align: center; background-color: orange; border: 3px solid black; border-radius: 10px; margin: 3px;"><h2>표준어</h2></div>		
+			<div style="text-align: center; border: 3px solid black; border-radius: 10px; margin: 3px;"><h3>{{text_kor}}</h3></div>
+			<div style="text-align: center; background-color: brown; border: 3px solid black; border-radius: 10px; margin: 3px;"><h2>영어</h2></div>
+			<div style="text-align: center; border: 3px solid black; border-radius: 10px; margin: 3px;"><h3>{{text_eng}}</h3></div>
+		</div>	
+	</div>
+		
+</body>
+</html>

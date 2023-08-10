@@ -32,4 +32,4 @@ def type_text():
     return render_template('./translate.html',text_kor=target_text_ko,text_eng=target_text_en)
 
 if __name__ == "__main__":
-  app.run()
+  app.run(debug=True)

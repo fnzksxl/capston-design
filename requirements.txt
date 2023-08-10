@@ -14,3 +14,5 @@ tokenizers
 datasets
 accelerate
 deep-translator
+torch
+torchvision

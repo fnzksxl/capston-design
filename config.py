@@ -2,7 +2,8 @@ from transformers import AutoModelForSeq2SeqLM,AutoTokenizer
 from tokenizers import Tokenizer
 
 import os
-
+import warnings
+warnings.filterwarnings("ignore")
 
 # Model Config
 model_path='./saved_model'

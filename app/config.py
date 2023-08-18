@@ -1,5 +1,6 @@
 from transformers import AutoModelForSeq2SeqLM,AutoTokenizer
 from tokenizers import Tokenizer
+from transformers import pipeline
 
 import os
 import warnings
@@ -14,6 +15,7 @@ if os.path.exists(f'{model_path}/pytorch_model.bin'):
   print("Use Customized Model")
   model = AutoModelForSeq2SeqLM.from_pretrained(model_path)
 tokenizer = AutoTokenizer.from_pretrained(model_name)
+_pipeline=pipeline('text2text-generation',model=model_path,tokenizer=model_name)
 
 # Dataset
 # Tsv file name must be data.tsv

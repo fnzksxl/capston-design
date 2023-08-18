@@ -1,7 +1,7 @@
 from torch.utils.data import Dataset
 from tokenizers import Tokenizer
 
-import config
+import app.config as config
 import pandas as pd
 
 tokenizer=config.tokenizer

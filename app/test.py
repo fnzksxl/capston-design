@@ -1,5 +1,5 @@
 from transformers import pipeline
-import config
+import app.config as config
 from deep_translator import GoogleTranslator
 
 nlg_pipeline=pipeline('text2text-generation',model=config.model_path,tokenizer=config.model_name)

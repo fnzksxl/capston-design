@@ -9,6 +9,7 @@ from fastapi.security import (
   OAuth2PasswordRequestForm
 )
 from sqlalchemy.orm.session import Session
+from sqlalchemy.orm.exc import NoResultFound
 
 from app import schemas, models
 from app.database import get_db
@@ -21,7 +22,7 @@ security = HTTPBearer()
 async def get_user_list(db: Session = Depends(get_db)):
   return db.query(models.User).all()
 
-@router.post("/add", response_model=schemas.ResourceId,status_code=status.HTTP_201_CREATED)
+@router.post("/register", response_model=schemas.ResourceId,status_code=status.HTTP_201_CREATED)
 async def add_user(data: schemas.UserAdd, db: Session = Depends(get_db)):
   row = models.User(**{'email':data.email,'username':data.username})
   salt_value = bcrypt.gensalt()
@@ -33,18 +34,22 @@ async def add_user(data: schemas.UserAdd, db: Session = Depends(get_db)):
   return row
 
 @router.post("/login")
-async def issue_token(data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-  user = db.query(models.User).filter(models.User.username == data.username).first()
+async def issue_token(data: schemas.LoginUser, db: Session = Depends(get_db)):
+  try:
+    user = db.query(models.User).filter(models.User.email == data.email).first()
+  except NoResultFound:
+    raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,detail="Wrong Information.")
   if bcrypt.checkpw(data.password.encode(), user.password.encode()): # bcrypt.checkpw가 자동으로 salt값 추출 후 서로 비교해줌
-    return await utils.create_access_token(user, exp=timedelta(minutes=30))
+    token = await utils.create_access_token(user, exp=timedelta(minutes=30))
+    return {"access_token" : token} 
   raise HTTPException(401)
 
 
-@router.get("/me", response_model=schemas.GetUser)
+@router.get("/me")
 async def get_current_user(cred: HTTPAuthorizationCredentials = Depends(security), db: Session = Depends(get_db)):
-  user_info = await utils.get_username(cred,db)
-  return user_info
-
-@router.post("/is_provider")
+  decoded_dict = await utils.verify_user(cred)
+  row = db.query(models.User).filter_by(id=decoded_dict.get("id")).first()
+  return row.items
+@router.get("/is_provider/{username}")
 async def is_provider_user(username: str, db: Session = Depends(get_db)):
   return True if utils.get_userprovider(db,username) else False

@@ -68,7 +68,8 @@ async def verify_user(cred):
   '''
   token = cred.credentials
   try:
-    if jwt.decode(token, SECRET_KEY, ALGORITHM):
-      return True
+    jwt_dict = jwt.decode(token, SECRET_KEY, ALGORITHM)
+    if jwt_dict:
+      return jwt_dict
   except ExpiredSignatureError:
     raise HTTPException(401, "Expired")

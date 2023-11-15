@@ -11,6 +11,10 @@ class GetUser(BaseModel):
   id: int
   username: str
 
+class LoginUser(BaseModel):
+  email: str
+  password: str
+
 class UserAdd(BaseModel):
   email: str
   username: str

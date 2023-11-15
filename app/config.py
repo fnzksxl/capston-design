@@ -1,32 +1,18 @@
-from transformers import AutoModelForSeq2SeqLM,AutoTokenizer
-from tokenizers import Tokenizer
-from transformers import pipeline
-
 import os
-import warnings
-warnings.filterwarnings("ignore")
+from dotenv import load_dotenv
+from functools import lru_cache
 
-# Model Config
-model_path='./saved_model'
-model_name = "gogamza/kobart-base-v2"
+load_dotenv()
 
-model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
-if os.path.exists(f'{model_path}/pytorch_model.bin'):
-  print("Use Customized Model")
-  model = AutoModelForSeq2SeqLM.from_pretrained(model_path)
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-_pipeline=pipeline('text2text-generation',model=model_path,tokenizer=model_name)
+class Settings():
+  DB_USERNAME = os.environ.get("DB_USERNAME")
+  DB_HOST = os.environ.get("DB_HOST")
+  DB_PASSWORD = os.environ.get("DB_PASSWORD")
+  DB_NAME = os.environ.get("DB_NAME")
+  DB_PORT = int(os.environ.get("DB_PORT"))
 
-# Dataset
-# Tsv file name must be data.tsv
-data_root='./dataset'
+@lru_cache
+def get_settings():
+    return Settings()
 
-# Training Arguments
-epoch=3
-train_batch_size=32
-eval_batch_size=32
-eval_steps=3000
-save_steps=6000
-warmup_steps=300
-strategy="steps"
-save_limits=3
+settings = get_settings()

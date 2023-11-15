@@ -1,1 +1,5 @@
-saved_model/*
+saved_model/
+venv/
+dataset/
+.env
+__pycache__/

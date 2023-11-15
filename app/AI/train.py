@@ -1,7 +1,8 @@
 from transformers import Seq2SeqTrainingArguments,Seq2SeqTrainer,\
                          DataCollatorForSeq2Seq
-import app.dataset as dataset
-import app.config as config
+
+import app.AI.config as config
+import app.AI.dataset as dataset
 
 
 model_path=config.model_path

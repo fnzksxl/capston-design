@@ -1,8 +1,9 @@
 from torch.utils.data import Dataset
 from tokenizers import Tokenizer
 
-import app.config as config
 import pandas as pd
+
+import app.AI.config as config
 
 tokenizer=config.tokenizer
 class TextStyleTransferDataset(Dataset):

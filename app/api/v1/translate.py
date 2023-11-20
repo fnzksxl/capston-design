@@ -14,9 +14,9 @@ security = HTTPBearer()
 
 @router.post("",response_model=schemas.Translated)
 async def translate_item(data: schemas.ToTranslate,cred: HTTPAuthorizationCredentials = Depends(security), db: Session = Depends(get_db)):
-  if utils.verify_user(cred):
+  if await utils.verify_user(cred):
     translated_text = test.generate_text(data.dialect)[0] # Translation
-    english_text = test.get_koen_text(translated_text)
+    english_text = test.translate_with_papago(translated_text)
 
     return {"dialect": data.dialect, "standard": translated_text, "english": english_text}
   

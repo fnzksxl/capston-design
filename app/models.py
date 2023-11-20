@@ -13,7 +13,6 @@ class BaseMin:
 class User(BaseMin, Base):
   __tablename__ = "user"
   
-  username = Column(String(10), nullable=False, unique=True)
   email = Column(String(30), nullable=False, unique=True)
   password = Column(String(255), nullable=False)
   is_provider = Column(Boolean, default=True)

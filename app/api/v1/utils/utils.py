@@ -22,7 +22,7 @@ async def create_access_token(data: schemas.User, exp: Optional[timedelta] = Non
   return type : Key(Encoded JWT)
   '''
   user_schema = schemas.User.parse_obj(data.__dict__)
-  expire = datetime.utcnow() + (exp or timedelta(minutes=30))
+  expire = datetime.utcnow() + (exp or timedelta(days=1))
   user_info = schemas.UserPayload(**user_schema.dict(), exp=expire)
 
   return jwt.encode(user_info.dict(),  SECRET_KEY, algorithm=ALGORITHM)
@@ -51,14 +51,14 @@ async def get_username(cred,db):
   except ExpiredSignatureError:
     raise HTTPException(401, "Expired")
   
-  username = decoded_data.get('username')
-  if not username:
+  email = decoded_data.get('email')
+  if not email:
     raise HTTPException(400, "Invalid token")
-  user = db.query(models.User).filter(models.User.username == username).first()
+  user = db.query(models.User).filter(models.User.email == email).first()
 
   if not user:
     raise HTTPException(404, "User not found")
-  return { 'id' : user.id, 'username' : user.username}
+  return { 'id' : user.id, 'email' : user.email}
  
 async def verify_user(cred):
   '''

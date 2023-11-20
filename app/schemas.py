@@ -17,13 +17,15 @@ class LoginUser(BaseModel):
 
 class UserAdd(BaseModel):
   email: str
-  username: str
   password: str
 
 class TsItemAdd(BaseModel):
   dialect: str
   standard: str
   english: str
+
+class TsItemDelete(BaseModel):
+  item_id: int
 
 class TsItem(TsItemAdd):
   id: int
@@ -49,3 +51,6 @@ class ToTranslate(BaseModel):
 class Translated(ToTranslate):
   standard: str
   english: str
+
+class DuplicatedEmail(BaseModel):
+  email: str

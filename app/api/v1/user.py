@@ -24,7 +24,7 @@ async def get_user_list(db: Session = Depends(get_db)):
 
 @router.post("/register", response_model=schemas.ResourceId,status_code=status.HTTP_201_CREATED)
 async def add_user(data: schemas.UserAdd, db: Session = Depends(get_db)):
-  row = models.User(**{'email':data.email,'username':data.username})
+  row = models.User(**{'email':data.email})
   salt_value = bcrypt.gensalt()
   row.password = bcrypt.hashpw(data.password.encode(), salt_value)
 
@@ -43,6 +43,14 @@ async def issue_token(data: schemas.LoginUser, db: Session = Depends(get_db)):
     token = await utils.create_access_token(user, exp=timedelta(minutes=30))
     return {"access_token" : token} 
   raise HTTPException(401)
+
+@router.post("/duplicated",status_code=status.HTTP_200_OK)
+async def is_duplicated(data: schemas.DuplicatedEmail, db: Session = Depends(get_db)):
+  user = db.query(models.User).filter_by(email=data.email).first()
+  if user:
+    return HTTPException(422,detail={"duplicated":"YES"})
+  else:
+    return {"duplicated":"NO"}
 
 
 @router.get("/me")

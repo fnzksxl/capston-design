@@ -30,6 +30,7 @@ async def add_item(data: schemas.TsItemAdd, cred: HTTPAuthorizationCredentials =
 @router.post("/delete",status_code=status.HTTP_202_ACCEPTED)
 async def delete_item(data: schemas.TsItemDelete, cred: HTTPAuthorizationCredentials = Depends(security), db: Session = Depends(get_db)):
   if await utils.verify_user(cred):
+    print(data)
     item_info = db.query(models.TsItem).filter_by(id=data.item_id).first()
     db.delete(item_info)
     db.commit()

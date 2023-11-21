@@ -17,6 +17,7 @@ class User(BaseMin, Base):
   password = Column(String(255), nullable=False)
   is_provider = Column(Boolean, default=True)
   items = relationship("TsItem", back_populates="owner")
+  guestbooks = relationship("GuestBook", back_populates="book_owner")
 
 class TsItem(BaseMin, Base):
   __tablename__ = "tsitem"
@@ -24,6 +25,17 @@ class TsItem(BaseMin, Base):
   dialect = Column(String(255), nullable=False)
   standard = Column(String(255), nullable=False)
   english = Column(String(255), nullable=False)
+  chinese = Column(String(255), nullable=False)
+  japanese = Column(String(255), nullable=False)
   owner_id = Column(Integer, ForeignKey("user.id"))
 
   owner = relationship("User", back_populates="items")
+
+class GuestBook(BaseMin,Base):
+  __tablename__ = "guestbook"
+
+  message = Column(String(255),nullable=False)
+  message_owner = Column(String(20),nullable=False)
+  owner_id = Column(Integer, ForeignKey("user.id"))
+
+  book_owner = relationship("User",back_populates="guestbooks")

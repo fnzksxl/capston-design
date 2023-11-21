@@ -55,9 +55,13 @@ async def is_duplicated(data: schemas.DuplicatedEmail, db: Session = Depends(get
 
 @router.get("/me")
 async def get_current_user(cred: HTTPAuthorizationCredentials = Depends(security), db: Session = Depends(get_db)):
-  decoded_dict = await utils.verify_user(cred)
-  row = db.query(models.User).filter_by(id=decoded_dict.get("id")).first()
-  return row.items
-@router.get("/is_provider/{username}")
-async def is_provider_user(username: str, db: Session = Depends(get_db)):
-  return True if utils.get_userprovider(db,username) else False
+  if await utils.verify_user(cred):
+    decoded_dict = await utils.get_username(cred,db)
+    row = db.query(models.User).filter_by(id=decoded_dict.get("id")).first()
+    sorted_items = sorted(row.items, key=lambda x: x.created_at, reverse=True)
+
+    return sorted_items
+  
+@router.get("/is_provider/{email}")
+async def is_provider_user(email: str, db: Session = Depends(get_db)):
+  return True if utils.get_userprovider(db,email) else False

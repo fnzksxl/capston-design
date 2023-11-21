@@ -23,6 +23,8 @@ class TsItemAdd(BaseModel):
   dialect: str
   standard: str
   english: str
+  chinese: str
+  japanese: str
 
 class TsItemDelete(BaseModel):
   item_id: int
@@ -51,6 +53,12 @@ class ToTranslate(BaseModel):
 class Translated(ToTranslate):
   standard: str
   english: str
+  chinese: str
+  japanese: str
 
 class DuplicatedEmail(BaseModel):
   email: str
+
+class GuestBookAdd(BaseModel):
+  message: str
+  name: str

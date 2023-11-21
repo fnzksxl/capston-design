@@ -25,6 +25,7 @@ class TsItemAdd(BaseModel):
   english: str
   chinese: str
   japanese: str
+  language: str
 
 class TsItemDelete(BaseModel):
   item_id: int
@@ -62,3 +63,6 @@ class DuplicatedEmail(BaseModel):
 class GuestBookAdd(BaseModel):
   message: str
   name: str
+
+class GuestBookUpdate(BaseModel):
+  message: str

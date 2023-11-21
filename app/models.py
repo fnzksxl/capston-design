@@ -27,6 +27,7 @@ class TsItem(BaseMin, Base):
   english = Column(String(255), nullable=False)
   chinese = Column(String(255), nullable=False)
   japanese = Column(String(255), nullable=False)
+  language = Column(String(10), nullable=False)
   owner_id = Column(Integer, ForeignKey("user.id"))
 
   owner = relationship("User", back_populates="items")

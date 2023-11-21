@@ -28,3 +28,15 @@ async def guestbook(db: Session=Depends(get_db)):
   guestbook_row = db.query(models.GuestBook).all()
   sorted_items = sorted(guestbook_row, key=lambda x: x.created_at, reverse=True)
   return sorted_items
+
+@router.put("/update",status_code=status.HTTP_202_ACCEPTED)
+async def guestbook_update(data: schemas.GuestBookUpdate, cred: HTTPAuthorizationCredentials = Depends(security), db: Session = Depends(get_db)):
+  decoded_dict = await utils.verify_user(cred)
+  if decoded_dict:
+    guestbook_row = db.query(models.GuestBook).filter_by(owner_id=decoded_dict.get("id")).first()
+    guestbook_row.message = data.message
+    db.commit()
+
+    return {"SUCCESS":True}
+  else:
+    raise HTTPException(422)

@@ -40,8 +40,8 @@ async def issue_token(data: schemas.LoginUser, db: Session = Depends(get_db)):
   except NoResultFound:
     raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,detail="Wrong Information.")
   if bcrypt.checkpw(data.password.encode(), user.password.encode()): # bcrypt.checkpw가 자동으로 salt값 추출 후 서로 비교해줌
-    token = await utils.create_access_token(user, exp=timedelta(minutes=30))
-    return {"access_token" : token} 
+    token, user_id = await utils.create_access_token(user, exp=timedelta(minutes=30))
+    return {"access_token" : token, "user_id": user_id} 
   raise HTTPException(401)
 
 @router.post("/duplicated",status_code=status.HTTP_200_OK)

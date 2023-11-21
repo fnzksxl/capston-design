@@ -25,7 +25,7 @@ async def create_access_token(data: schemas.User, exp: Optional[timedelta] = Non
   expire = datetime.utcnow() + (exp or timedelta(days=1))
   user_info = schemas.UserPayload(**user_schema.dict(), exp=expire)
 
-  return jwt.encode(user_info.dict(),  SECRET_KEY, algorithm=ALGORITHM)
+  return jwt.encode(user_info.dict(),  SECRET_KEY, algorithm=ALGORITHM), data.id
 
 # get_username -> 유저 ID, 유저 Name 만 return
 # get_userinfo -> 유저 is_provider return

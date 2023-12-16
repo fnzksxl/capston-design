@@ -1,5 +1,6 @@
 import bcrypt
 import pytest_asyncio
+import json
 from httpx import AsyncClient
 
 from app import main, models
@@ -42,3 +43,12 @@ def user(session) -> models.User:
     session.commit()
 
     return row
+
+
+@pytest_asyncio.fixture
+async def token(client, user) -> str:
+    body = {"email": user.email, "password": "testpw"}
+    r = await client.post("/users/login", data=json.dumps(body))
+    data = r.json()
+
+    return data.get("access_token")

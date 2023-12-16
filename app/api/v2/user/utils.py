@@ -59,3 +59,13 @@ async def is_duplicated(email, db):
         return True
     else:
         return False
+
+
+async def verify_user(cred):
+    token = cred.credentials
+    try:
+        jwt_dict = jwt.decode(token, settings.SECRET_KEY, settings.ALGORITHM)
+        if jwt_dict:
+            return jwt_dict
+    except ExpiredSignatureError:
+        raise HTTPException(401, "Expired")

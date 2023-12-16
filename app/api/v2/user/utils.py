@@ -52,3 +52,10 @@ async def create_access_token(user):
         jwt.encode(user_info.dict(), settings.SECRET_KEY, algorithm=settings.ALGORITHM),
         user_schema["id"],
     )
+
+
+async def is_duplicated(email, db):
+    if db.query(User).filter_by(email=email).first():
+        return True
+    else:
+        return False

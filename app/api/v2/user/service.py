@@ -1,6 +1,12 @@
 import bcrypt
 
-from .utils import add_user, find_user_by_email, create_access_token, is_password_correct
+from .utils import (
+    add_user,
+    find_user_by_email,
+    create_access_token,
+    is_password_correct,
+    is_duplicated,
+)
 
 
 async def userAdd(data, db):
@@ -17,3 +23,7 @@ async def userLogin(data, db):
     if await is_password_correct(data.password, user.password):
         token, user_id = await create_access_token(user)
         return {"access_token": token, "user_id": user_id}
+
+
+async def emailDuplicated(data, db):
+    return {"duplicated": await is_duplicated(data.email, db)}

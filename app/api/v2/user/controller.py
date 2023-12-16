@@ -3,8 +3,8 @@ from fastapi.security import HTTPBearer
 from sqlalchemy.orm.session import Session
 
 from app.database import get_db
-from .schema import UserAdd, UserAddReturn
-from .service import userAdd, userLogin
+from .schema import UserAdd, UserAddReturn, DuplicatedEmail
+from .service import userAdd, userLogin, emailDuplicated
 
 router = APIRouter()
 security = HTTPBearer()
@@ -18,3 +18,8 @@ async def add_user(data: UserAdd, db: Session = Depends(get_db)):
 @router.post("/login")
 async def issue_token(data: UserAdd, db: Session = Depends(get_db)):
     return await userLogin(data, db)
+
+
+@router.post("/duplicated", status_code=status.HTTP_200_OK)
+async def is_duplicated(data: DuplicatedEmail, db: Session = Depends(get_db)):
+    return await emailDuplicated(data, db)

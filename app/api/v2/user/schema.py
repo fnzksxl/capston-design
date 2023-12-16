@@ -2,13 +2,15 @@ from datetime import datetime
 from pydantic import BaseModel
 
 
-class UserAdd(BaseModel):
+class DuplicatedEmail(BaseModel):
     email: str
+
+
+class UserAdd(DuplicatedEmail):
     password: str
 
 
-class UserAddReturn(BaseModel):
-    email: str
+class UserAddReturn(DuplicatedEmail):
     id: int
 
 

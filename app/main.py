@@ -1,5 +1,3 @@
-from pydantic import BaseModel
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -12,15 +10,17 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins={"*"},
     allow_credentials=True,
-    allow_methods={"OPTIONS", "GET", "POST"},
+    allow_methods={"OPTIONS", "GET", "POST", "DELETE"},
     allow_headers={"*"},
 )
 
+
 @app.on_event("startup")
 def on_startup():
-  from app import models
-  from app.database import engine
+    from app import models
+    from app.database import engine
 
-  models.Base.metadata.create_all(bind=engine)
+    models.Base.metadata.create_all(bind=engine)
+
 
 app.include_router(api.router)

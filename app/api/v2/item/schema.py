@@ -15,3 +15,7 @@ class TsItem(TsItemAdd):
 
     class Config:
         from_attributes = True
+
+
+class TsItemDelete(BaseModel):
+    id: int

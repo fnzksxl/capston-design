@@ -4,8 +4,8 @@ from sqlalchemy.orm.session import Session
 from typing import List
 
 from app.database import get_db
-from .schema import TsItemAdd, TsItem
-from .service import addTsItem, findTsItems
+from .schema import TsItemAdd, TsItem, TsItemDelete
+from .service import addTsItem, findTsItems, deleteTsItem
 
 router = APIRouter()
 security = HTTPBearer()
@@ -23,3 +23,12 @@ async def add_item(
     db: Session = Depends(get_db),
 ):
     return await addTsItem(data, cred, db)
+
+
+@router.delete("/{id}", response_model=TsItemDelete, status_code=status.HTTP_202_ACCEPTED)
+async def delete_item(
+    data: TsItemDelete = Depends(),
+    cred: HTTPAuthorizationCredentials = Depends(security),
+    db: Session = Depends(get_db),
+):
+    return await deleteTsItem(data, cred, db)

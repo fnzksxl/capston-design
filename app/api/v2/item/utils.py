@@ -27,3 +27,17 @@ async def find_tsitems(db):
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=f"{e} occured while finding tsitems",
         )
+
+
+async def delete_tsitem(id, db):
+    try:
+        row = db.query(TsItem).filter_by(id=id).first()
+        db.delete(row)
+        db.commit()
+
+        return row
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=f"{e} occured while deleting tsitems",
+        )

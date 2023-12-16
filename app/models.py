@@ -45,9 +45,6 @@ class TsItem(BaseMin, Base):
 
     owner = relationship("User", back_populates="items")
 
-    def as_dict(self):
-        return {column.name: getattr(self, column.name) for column in self.__table__.columns}
-
 
 class GuestBook(BaseMin, Base):
     __tablename__ = "guestbook"

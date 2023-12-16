@@ -25,22 +25,24 @@ async def add_user(email, pw, db):
 
 
 async def find_user_by_email(email, db):
-    try:
-        row = db.query(User).filter_by(email=email).first()
-
+    row = db.query(User).filter_by(email=email).first()
+    if row:
         return row
-    except Exception as e:
+    else:
         raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=f"{e} occured while trying login",
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="No Email Found",
         )
 
 
 async def is_password_correct(data, user):
-    try:
-        return bcrypt.checkpw(data.encode(), user.encode())
-    except ExpiredSignatureError:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token Expired")
+    if bcrypt.checkpw(data.encode(), user.encode()):
+        return True
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Incorrect Password",
+        )
 
 
 async def create_access_token(user):

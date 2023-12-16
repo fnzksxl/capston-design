@@ -3,3 +3,5 @@ venv/
 dataset/
 .env
 __pycache__/
+htmlcov/
+.pytest_cache/

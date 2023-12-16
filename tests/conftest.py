@@ -25,7 +25,7 @@ async def session():
 
 @pytest_asyncio.fixture
 async def client(app):
-    async with AsyncClient(app=app, base_url="http://test/api/v1") as ac:
+    async with AsyncClient(app=app, base_url="http://test/v2") as ac:
         models.Base.metadata.drop_all(bind=engine)
         models.Base.metadata.create_all(bind=engine)
 

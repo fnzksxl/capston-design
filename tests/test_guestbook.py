@@ -31,3 +31,27 @@ async def test_get_guestbooks(client, guestbook):
 
     assert r.status_code == 200
     assert data[0].get("id") == guestbook.id
+
+
+@pytest.mark.asyncio
+async def test_update_guestbook(client, token, guestbook):
+    body = {"message": "modified_message"}
+    headers = {"Authorization": f"Bearer {token}"}
+
+    r = await client.put(f"/guestbooks/{guestbook.id}", data=json.dumps(body), headers=headers)
+    data = r.json()
+
+    assert r.status_code == 202
+    assert data.get("message") == body["message"]
+
+
+@pytest.mark.asyncio
+async def test_update_guestbook_failed_by_invalid_id(client, token, guestbook):
+    body = {"message": "modified_message"}
+    headers = {"Authorization": f"Bearer {token}"}
+
+    r = await client.put(f"/guestbooks/{guestbook.id+1}", data=json.dumps(body), headers=headers)
+    data = r.json()
+
+    assert r.status_code == 400
+    assert data.get("detail") == "Guestbook Not Found"

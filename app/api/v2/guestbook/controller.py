@@ -25,10 +25,11 @@ async def guestbook(db: Session = Depends(get_db)):
     return await findAllGuestBook(db)
 
 
-@router.put("", response_model=GuestBookReturn, status_code=status.HTTP_202_ACCEPTED)
+@router.put("/{id}", response_model=GuestBookReturn, status_code=status.HTTP_202_ACCEPTED)
 async def guestbook_update(
     data: GuestBookUpdate,
+    id: int,
     cred: HTTPAuthorizationCredentials = Depends(security),
     db: Session = Depends(get_db),
 ):
-    return await updateGuestBook(data, cred, db)
+    return await updateGuestBook(data, id, cred, db)

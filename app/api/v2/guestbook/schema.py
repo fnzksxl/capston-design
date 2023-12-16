@@ -13,4 +13,3 @@ class GuestBookReturn(GuestBookAdd):
 
 class GuestBookUpdate(BaseModel):
     message: str
-    id: int

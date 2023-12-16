@@ -11,6 +11,6 @@ async def findAllGuestBook(db):
     return await find_all_guestbook(db)
 
 
-async def updateGuestBook(data, cred, db):
+async def updateGuestBook(data, id, cred, db):
     decoded_dict = await utils.verify_user(cred)
-    return await update_guestbook(data.message, data.id, decoded_dict.get("id"), db)
+    return await update_guestbook(data.message, id, decoded_dict.get("id"), db)

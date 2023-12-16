@@ -47,3 +47,21 @@ async def test_get_items(client, item):
 
     assert r.status_code == 200
     assert data[0].get("id") == item.id
+
+
+@pytest.mark.asyncio
+async def test_delete_item(client, item, token):
+    headers = {"Authorization": f"Bearer {token}"}
+
+    r = await client.delete(f"/items/{item.id}", headers=headers)
+
+    assert r.status_code == 202
+
+
+@pytest.mark.asyncio
+async def test_delete_item_failed_by_invaild_id(client, item, token):
+    headers = {"Authorization": f"Bearer {token}"}
+
+    r = await client.delete(f"/items/{item.id+1}", headers=headers)
+
+    assert r.status_code == 400

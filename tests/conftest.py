@@ -62,6 +62,15 @@ def item(session, user) -> models.TsItem:
 
 
 @pytest_asyncio.fixture
+def guestbook(session, user) -> models.GuestBook:
+    row = models.GuestBook(message="test", message_owner="test_owner", owner_id=user.id)
+    session.add(row)
+    session.commit()
+
+    return row
+
+
+@pytest_asyncio.fixture
 async def token(client, user) -> str:
     body = {"email": user.email, "password": "testpw"}
     r = await client.post("/users/login", data=json.dumps(body))

@@ -3,7 +3,7 @@ from typing import ClassVar
 from functools import lru_cache
 
 
-class Settings(BaseSettings):
+class BaseConfig(BaseSettings):
     # DB
     DB_USERNAME: str
     DB_HOST: str
@@ -28,29 +28,12 @@ class Settings(BaseSettings):
         env_file_encoding = "utf-8"
 
 
-class testSettings(BaseSettings):
-    # DB
-    DB_TEST_USERNAME: str
-    DB_TEST_HOST: str
-    DB_TEST_PASSWORD: str
-    DB_TEST_NAME: str
-    DB_TEST_PORT: int
-
-    # CRED
-    SECRET_KEY: str
-    ALGORITHM: str
-
-    # PAPAGO
-    CLIENT_ID: str
-    CLIENT_SECRET: str
-
-    # Test Config
+class testSettings(BaseConfig):
     TESTING: ClassVar[bool] = True
 
-    class Config:
-        extra = "ignore"
-        env_file = ".env"
-        env_file_encoding = "utf-8"
+
+class Settings(BaseConfig):
+    TESTING: ClassVar[bool] = False
 
 
 class isMain(BaseSettings):

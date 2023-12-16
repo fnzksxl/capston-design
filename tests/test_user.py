@@ -13,6 +13,14 @@ async def test_add_user(client):
 
 
 @pytest.mark.asyncio
+async def test_add_user_failed_by_long_email(client):
+    body = {"email": "longlonglonglonglonglonglonglonglongmail@sample.com", "password": "samplepw"}
+    r = await client.post("/users/register", data=json.dumps(body))
+
+    assert r.status_code == 422
+
+
+@pytest.mark.asyncio
 async def test_email_duplicated_exist(client, user):
     body = {"email": "test@sample.com"}
     r = await client.post("/users/duplicated", data=json.dumps(body))

@@ -1,3 +1,4 @@
+from datetime import datetime
 from pydantic import BaseModel
 
 
@@ -9,3 +10,7 @@ class UserAdd(BaseModel):
 class UserAddReturn(BaseModel):
     email: str
     id: int
+
+
+class UserPayload(UserAddReturn):
+    exp: datetime

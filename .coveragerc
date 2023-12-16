@@ -1,0 +1,4 @@
+[run]
+omit =
+    app/config.py
+    app/api/v1/

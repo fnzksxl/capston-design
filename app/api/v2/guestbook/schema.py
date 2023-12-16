@@ -9,3 +9,8 @@ class GuestBookAdd(BaseModel):
 class GuestBookReturn(GuestBookAdd):
     id: int
     owner_id: int
+
+
+class GuestBookUpdate(BaseModel):
+    message: str
+    id: int

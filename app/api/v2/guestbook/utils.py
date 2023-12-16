@@ -20,3 +20,17 @@ async def add_guestbook(data, id, db):
 
 async def find_all_guestbook(db):
     return db.query(GuestBook).order_by(desc(GuestBook.created_at)).all()
+
+
+async def update_guestbook(message, id, owner_id, db):
+    try:
+        row = db.query(GuestBook).filter_by(owner_id=owner_id, id=id).first()
+        row.message = message
+        db.commit()
+
+        return row
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=f"{e} occured while updating guestbook",
+        )

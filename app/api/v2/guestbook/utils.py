@@ -1,4 +1,5 @@
 from fastapi import HTTPException, status
+from sqlalchemy import desc
 
 from app.models import GuestBook
 
@@ -15,3 +16,7 @@ async def add_guestbook(data, id, db):
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=f"{e} occured while adding guestbook",
         )
+
+
+async def find_all_guestbook(db):
+    return db.query(GuestBook).order_by(desc(GuestBook.created_at)).all()

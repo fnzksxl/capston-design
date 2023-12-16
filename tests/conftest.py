@@ -46,6 +46,22 @@ def user(session) -> models.User:
 
 
 @pytest_asyncio.fixture
+def item(session, user) -> models.TsItem:
+    row = models.TsItem(
+        dialect="dialect",
+        standard="standard",
+        english="english",
+        chinese="chinese",
+        japanese="japanese",
+        owner_id=user.id,
+    )
+    session.add(row)
+    session.commit()
+
+    return row
+
+
+@pytest_asyncio.fixture
 async def token(client, user) -> str:
     body = {"email": user.email, "password": "testpw"}
     r = await client.post("/users/login", data=json.dumps(body))

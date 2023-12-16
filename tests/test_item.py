@@ -38,3 +38,12 @@ async def test_add_item_failed_by_long_text(client, token):
     r = await client.post("/items", data=json.dumps(body), headers=headers)
 
     assert r.status_code == 422
+
+
+@pytest.mark.asyncio
+async def test_get_items(client, item):
+    r = await client.get("/items")
+    data = r.json()
+
+    assert r.status_code == 200
+    assert data[0].get("id") == item.id

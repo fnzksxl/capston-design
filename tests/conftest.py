@@ -30,3 +30,12 @@ async def client(app):
         models.Base.metadata.create_all(bind=engine)
 
         yield ac
+
+
+@pytest_asyncio.fixture
+def user(session) -> models.User:
+    row = models.User(password="testpw", email="test@sample.com")
+    session.add(row)
+    session.commit()
+
+    return row

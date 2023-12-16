@@ -16,7 +16,7 @@ async def get_item_list(db: Session = Depends(get_db)):
     return await findTsItems(db)
 
 
-@router.post("/add", response_model=TsItem, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=TsItem, status_code=status.HTTP_201_CREATED)
 async def add_item(
     data: TsItemAdd,
     cred: HTTPAuthorizationCredentials = Depends(security),

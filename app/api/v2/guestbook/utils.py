@@ -29,8 +29,8 @@ async def update_guestbook(message, id, owner_id, db):
         db.commit()
 
         return row
-    except Exception as e:
+    except Exception:
         raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=f"{e} occured while updating guestbook",
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Guestbook Not Found",
         )

@@ -1,3 +1,4 @@
+import bcrypt
 import pytest_asyncio
 from httpx import AsyncClient
 
@@ -34,7 +35,9 @@ async def client(app):
 
 @pytest_asyncio.fixture
 def user(session) -> models.User:
-    row = models.User(password="testpw", email="test@sample.com")
+    salt_value = bcrypt.gensalt()
+    pw = bcrypt.hashpw("testpw".encode(), salt_value)
+    row = models.User(password=pw, email="test@sample.com")
     session.add(row)
     session.commit()
 

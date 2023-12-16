@@ -39,3 +39,33 @@ async def test_email_duplicated_no_exist(client):
 
     assert r.status_code == 200
     assert not data.get("duplicated")
+
+
+@pytest.mark.asyncio
+async def test_login_user(client, user):
+    body = {"email": user.email, "password": "testpw"}
+    r = await client.post("/users/login", data=json.dumps(body))
+    data = r.json()
+
+    assert r.status_code == 200
+    assert data.get("user_id") == user.id
+
+
+@pytest.mark.asyncio
+async def test_login_user_invalid_pw(client, user):
+    body = {"email": user.email, "password": "wrongpw"}
+    r = await client.post("/users/login", data=json.dumps(body))
+    data = r.json()
+
+    assert r.status_code == 403
+    assert data.get("detail") == "Incorrect Password"
+
+
+@pytest.mark.asyncio
+async def test_login_user_invalid_email(client):
+    body = {"email": "noemail", "password": "testpw"}
+    r = await client.post("/users/login", data=json.dumps(body))
+    data = r.json()
+
+    assert r.status_code == 403
+    assert data.get("detail") == "No Email Found"

@@ -13,6 +13,6 @@ async def findTsItems(db):
     return await find_tsitems(db)
 
 
-async def deleteTsItem(data, cred, db):
+async def deleteTsItem(id, cred, db):
     if await utils.verify_user(cred):
-        return await delete_tsitem(data.id, db)
+        return await delete_tsitem(id, db)

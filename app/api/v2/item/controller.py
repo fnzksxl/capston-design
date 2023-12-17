@@ -27,8 +27,8 @@ async def add_item(
 
 @router.delete("/{id}", response_model=TsItemDelete, status_code=status.HTTP_202_ACCEPTED)
 async def delete_item(
-    data: TsItemDelete = Depends(),
+    id: int,
     cred: HTTPAuthorizationCredentials = Depends(security),
     db: Session = Depends(get_db),
 ):
-    return await deleteTsItem(data, cred, db)
+    return await deleteTsItem(id, cred, db)

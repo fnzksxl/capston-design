@@ -22,19 +22,19 @@ async def test_add_user_failed_by_long_email(client):
 
 @pytest.mark.asyncio
 async def test_email_duplicated_exist(client, user):
-    body = {"email": "test@sample.com"}
-    r = await client.post("/users/duplicated", data=json.dumps(body))
+    email = "test@sample.com"
+    r = await client.get(f"/users/duplicated?email={email}")
     data = r.json()
 
     assert r.status_code == 200
     assert data.get("duplicated")
-    assert body["email"] == user.email
+    assert email == user.email
 
 
 @pytest.mark.asyncio
 async def test_email_duplicated_no_exist(client):
-    body = {"email": "notexist@sample.com"}
-    r = await client.post("/users/duplicated", data=json.dumps(body))
+    email = "noexist@sample.com"
+    r = await client.get(f"/users/duplicated?email={email}")
     data = r.json()
 
     assert r.status_code == 200

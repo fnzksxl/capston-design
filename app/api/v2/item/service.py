@@ -14,5 +14,5 @@ async def findTsItems(db):
 
 
 async def deleteTsItem(id, cred, db):
-    if await utils.verify_user(cred):
-        return await delete_tsitem(id, db)
+    decoded_dict = await utils.verify_user(cred)
+    return await delete_tsitem(id, decoded_dict.get("id"), db)

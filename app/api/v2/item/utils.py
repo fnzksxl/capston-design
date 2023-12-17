@@ -23,15 +23,16 @@ async def find_tsitems(db):
     return row
 
 
-async def delete_tsitem(id, db):
-    try:
-        row = db.query(TsItem).filter_by(id=id).first()
-        db.delete(row)
-        db.commit()
-
-        return row
-    except Exception:
+async def delete_tsitem(id, user_id, db):
+    row = db.query(TsItem).filter_by(id=id).first()
+    if row is None:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="No Item Found",
         )
+    if row.owner_id == user_id:
+        db.delete(row)
+        db.commit()
+    else:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="It's not owner")
+    return row

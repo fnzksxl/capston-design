@@ -63,5 +63,18 @@ async def test_delete_item_failed_by_invaild_id(client, item, token):
     headers = {"Authorization": f"Bearer {token}"}
 
     r = await client.delete(f"/items/{item.id+1}", headers=headers)
+    data = r.json()
 
     assert r.status_code == 400
+    assert data.get("detail") == "No Item Found"
+
+
+@pytest.mark.asyncio
+async def test_delete_item_failed_by_wrong_user(client, item, token2):
+    headers = {"Authorization": f"Bearer {token2}"}
+
+    r = await client.delete(f"/items/{item.id}", headers=headers)
+    data = r.json()
+
+    assert r.status_code == 403
+    assert data.get("detail") == "It's not owner"

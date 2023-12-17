@@ -46,6 +46,17 @@ def user(session) -> models.User:
 
 
 @pytest_asyncio.fixture
+def user2(session) -> models.User:
+    salt_value = bcrypt.gensalt()
+    pw = bcrypt.hashpw("testpw".encode(), salt_value)
+    row = models.User(password=pw, email="test2@sample.com")
+    session.add(row)
+    session.commit()
+
+    return row
+
+
+@pytest_asyncio.fixture
 def item(session, user) -> models.TsItem:
     row = models.TsItem(
         dialect="dialect",
@@ -73,6 +84,14 @@ def guestbook(session, user) -> models.GuestBook:
 @pytest_asyncio.fixture
 async def token(client, user) -> str:
     body = {"email": user.email, "password": "testpw"}
+    r = await client.post("/users/login", data=json.dumps(body))
+
+    return r.headers.get("access_token")
+
+
+@pytest_asyncio.fixture
+async def token2(client, user2) -> str:
+    body = {"email": user2.email, "password": "testpw"}
     r = await client.post("/users/login", data=json.dumps(body))
 
     return r.headers.get("access_token")

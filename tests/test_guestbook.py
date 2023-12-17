@@ -55,3 +55,15 @@ async def test_update_guestbook_failed_by_invalid_id(client, token, guestbook):
 
     assert r.status_code == 400
     assert data.get("detail") == "Guestbook Not Found"
+
+
+@pytest.mark.asyncio
+async def test_update_guestbook_failed_by_wrong_user(client, token2, guestbook):
+    body = {"message": "modified_message"}
+    headers = {"Authorization": f"Bearer {token2}"}
+
+    r = await client.put(f"/guestbooks/{guestbook.id}", data=json.dumps(body), headers=headers)
+    data = r.json()
+
+    assert r.status_code == 403
+    assert data.get("detail") == "It's not owner"

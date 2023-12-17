@@ -74,6 +74,5 @@ def guestbook(session, user) -> models.GuestBook:
 async def token(client, user) -> str:
     body = {"email": user.email, "password": "testpw"}
     r = await client.post("/users/login", data=json.dumps(body))
-    data = r.json()
 
-    return data.get("access_token")
+    return r.headers.get("access_token")

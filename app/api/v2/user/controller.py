@@ -20,6 +20,6 @@ async def issue_token(data: UserAdd, db: Session = Depends(get_db)):
     return await userLogin(data, db)
 
 
-@router.post("/duplicated", status_code=status.HTTP_200_OK)
-async def is_duplicated(data: DuplicatedEmail, db: Session = Depends(get_db)):
+@router.get("/duplicated", status_code=status.HTTP_200_OK)
+async def is_duplicated(data: DuplicatedEmail = Depends(), db: Session = Depends(get_db)):
     return await emailDuplicated(data, db)

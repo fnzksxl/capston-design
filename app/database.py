@@ -11,7 +11,7 @@ engine = create_engine(
         password=settings.DB_PASSWORD,
         host=settings.DB_HOST,
         port=settings.DB_PORT,
-        name=settings.DB_NAME,
+        name=settings.DB_TEST_NAME if settings.TESTING else settings.DB_NAME,
     )
 )
 SessionLocal = sessionmaker(

@@ -8,7 +8,6 @@ class BaseConfig(BaseSettings):
     DB_USERNAME: str
     DB_HOST: str
     DB_PASSWORD: str
-    DB_NAME: str
     DB_PORT: int
 
     # CRED
@@ -30,10 +29,12 @@ class BaseConfig(BaseSettings):
 
 class testSettings(BaseConfig):
     TESTING: ClassVar[bool] = True
+    DB_TEST_NAME: str
 
 
 class Settings(BaseConfig):
     TESTING: ClassVar[bool] = False
+    DB_NAME: str
 
 
 class isMain(BaseSettings):
